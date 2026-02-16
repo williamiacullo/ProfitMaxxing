@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ProfitMaxxing — Glow Botanicals</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+
+:root{
+  --bg:#F7F5F0;
+  --bg2:#EFECE5;
+  --ink:#1A1A1A;
+  --ink2:#4A4A4A;
+  --ink3:#8A8A8A;
+  --ink4:#B8B5AD;
+  --accent:#C2410C;
+  --good:#1B7340;
+  --good-bg:#E8F5EC;
+  --warn:#92400E;
+  --warn-bg:#FEF3C7;
+  --bad:#991B1B;
+  --bad-bg:#FEE2E2;
+  --white:#FFFFFF;
+  --serif:'Instrument Serif',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono','SF Mono',monospace;
+}
+
+html,body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  height:100%;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  letter-spacing:-0.01em;
+}
+
+.story{width:100%;max-width:430px;height:100vh;height:100dvh;margin:0 auto;position:relative;overflow:hidden;background:var(--bg)}
+
+/* Progress — thin, warm, barely there */
+.prog{position:absolute;top:0;left:0;right:0;display:flex;gap:2px;z-index:100;padding:8px 16px}
+.prog-s{flex:1;height:2px;background:var(--ink4);border-radius:1px;overflow:hidden}
+.prog-s .f{width:0%;height:100%;background:var(--ink);border-radius:1px;transition:width .3s}
+.prog-s.done .f{width:100%}.prog-s.active .f{width:100%}
+
+/* Header */
+.hdr{position:absolute;top:18px;left:20px;right:20px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.hdr-brand{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.hdr-date{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+
+/* Ticker */
+.ticker{position:absolute;top:42px;left:20px;right:20px;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bad-bg);border-radius:8px;opacity:0;transition:opacity .4s}
+.ticker.show{opacity:1}
+.ticker.good-mode{background:var(--good-bg)}
+.ticker-l{font-family:var(--sans);font-size:11px;font-weight:400;color:var(--bad)}
+.ticker-v{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--bad)}
+.ticker.good-mode .ticker-l{color:var(--good)}
+.ticker.good-mode .ticker-v{color:var(--good)}
+
+/* Tap */
+.tap{position:absolute;top:0;bottom:0;z-index:50}
+.tap-l{left:0;width:25%}.tap-r{right:0;width:75%}
+
+/* Track */
+.track{width:100%;height:100%;display:flex;transition:transform .45s cubic-bezier(.22,.68,0,1)}
+
+/* Card */
+.card{min-width:100%;height:100%;display:flex;flex-direction:column;justify-content:center;padding:72px 24px 40px;position:relative;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+
+/* Typography */
+.serif{font-family:var(--serif)}
+.mono{font-family:var(--mono)}
+.kicker{font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.kicker.good{color:var(--good)}.kicker.bad{color:var(--bad)}.kicker.warn{color:var(--warn)}.kicker.neutral{color:var(--ink3)}
+.headline{font-family:var(--serif);font-size:32px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;margin-bottom:16px;color:var(--ink)}
+.headline em{font-style:italic}
+.body{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.65;color:var(--ink2);margin-bottom:20px}
+.body strong{font-weight:500;color:var(--ink)}
+.bignum{font-family:var(--mono);font-weight:500;letter-spacing:-0.04em;line-height:1}
+.bignum-label{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink3);margin-top:4px}
+
+/* Divider */
+.rule{width:32px;height:1px;background:var(--ink4);margin:20px 0}
+
+/* Compare */
+.compare{display:flex;gap:12px;margin:20px 0}
+.compare-box{flex:1;padding:20px 16px;border-radius:12px;background:var(--white);border:1px solid rgba(0,0,0,.06)}
+.compare-box.bad{border-left:3px solid var(--bad)}
+.compare-box.good{border-left:3px solid var(--good)}
+.compare-label{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin-bottom:8px}
+.compare-val{font-family:var(--mono);font-size:28px;font-weight:500;letter-spacing:-0.03em}
+.compare-box.bad .compare-val{color:var(--bad)}
+.compare-box.good .compare-val{color:var(--good)}
+.compare-sub{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--ink3);margin-top:4px}
+
+/* Evidence box */
+.evidence{background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:16px 18px;margin:16px 0}
+.evidence-title{font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.04)}
+.evidence-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0}
+.evidence-name{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2)}
+.evidence-val{font-family:var(--mono);font-size:13px;font-weight:500}
+.evidence-val.good{color:var(--good)}.evidence-val.bad{color:var(--bad)}.evidence-val.mid{color:var(--warn)}
+.evidence-you{font-weight:500;color:var(--ink)}
+.evidence-src{font-family:var(--sans);font-size:10px;font-weight:300;color:var(--ink4);margin-top:10px;padding-top:8px;border-top:1px solid rgba(0,0,0,.04);font-style:italic}
+
+/* Competitors */
+.comps{display:flex;gap:8px;margin:16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
+.comps::-webkit-scrollbar{display:none}
+.comp{flex-shrink:0;background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:10px;padding:12px 16px;min-width:140px}
+.comp-name{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink)}
+.comp-stat{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-top:2px}
+
+/* Buttons */
+.btn{display:block;width:100%;padding:14px;border-radius:10px;text-align:center;font-family:var(--sans);font-size:14px;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:all .15s;letter-spacing:-.01em;margin-top:16px}
+.btn:active{transform:scale(.98);opacity:.9}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-secondary{background:transparent;border:1.5px solid rgba(0,0,0,.12);color:var(--ink)}
+.btn-hint{text-align:center;font-family:var(--sans);font-size:11px;font-weight:300;color:var(--ink4);margin-top:6px}
+
+/* What-if */
+.whatif{background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:12px;overflow:hidden;margin:16px 0}
+.whatif-header{padding:14px 18px;background:var(--good-bg);font-family:var(--sans);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--good)}
+.whatif-body{padding:4px 18px 14px}
+.whatif-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.03)}
+.whatif-row:last-child{border-bottom:none}
+.whatif-metric{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2)}
+.whatif-vals{display:flex;gap:12px;align-items:center}
+.whatif-old{font-family:var(--mono);font-size:13px;color:var(--ink4);text-decoration:line-through}
+.whatif-new{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--good)}
+.whatif-arr{font-family:var(--sans);font-size:11px;color:var(--ink4)}
+
+/* Checklist */
+.checklist{list-style:none;margin:16px 0}
+.check-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.04)}
+.check-item:last-child{border-bottom:none}
+.check-num{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink3);padding-top:2px;flex-shrink:0}
+.check-text{font-family:var(--sans);font-size:14px;font-weight:300;line-height:1.5;color:var(--ink2)}
+.check-text strong{font-weight:500;color:var(--ink)}
+.check-impact{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--good);margin-top:4px;display:block}
+
+/* Tally */
+.tally{text-align:center;padding:28px 20px;background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:12px;margin:16px 0}
+.tally-num{font-family:var(--mono);font-size:44px;font-weight:500;letter-spacing:-0.04em;color:var(--good);line-height:1}
+.tally-label{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink3);margin-top:6px}
+.tally-sub{font-family:var(--sans);font-size:15px;font-weight:300;color:var(--ink2);margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,.04)}
+
+/* Swipe hint */
+.hint{position:absolute;bottom:24px;left:0;right:0;text-align:center;font-family:var(--sans);font-size:11px;font-weight:300;color:var(--ink4);z-index:100;animation:fade 4s ease infinite}
+@keyframes fade{0%,100%{opacity:0}30%,70%{opacity:.6}}
+
+/* Animations */
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.card.active .kicker{animation:rise .4s ease .05s both}
+.card.active .headline{animation:rise .4s ease .1s both}
+.card.active .body{animation:rise .4s ease .18s both}
+.card.active .bignum{animation:rise .4s ease .1s both}
+.card.active .bignum-label{animation:rise .4s ease .15s both}
+.card.active .compare{animation:rise .4s ease .15s both}
+.card.active .evidence{animation:rise .4s ease .22s both}
+.card.active .comps{animation:rise .4s ease .2s both}
+.card.active .rule{animation:rise .4s ease .12s both}
+.card.active .btn{animation:rise .4s ease .28s both}
+.card.active .whatif{animation:rise .4s ease .18s both}
+.card.active .tally{animation:rise .4s ease .12s both}
+.card.active .checklist{animation:rise .4s ease .2s both}
+
+/* Toast */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(12px);background:var(--ink);color:var(--bg);padding:10px 22px;border-radius:100px;font-family:var(--sans);font-size:13px;font-weight:400;opacity:0;transition:all .3s;z-index:200;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Desktop frame */
+@media(min-width:431px){
+  body{display:flex;align-items:center;justify-content:center;background:#E8E5DE}
+  .story{border-radius:32px;overflow:hidden;border:1px solid rgba(0,0,0,.08);height:min(932px,95vh);box-shadow:0 24px 80px rgba(0,0,0,.08)}
+}
+</style>
+</head>
+<body>
+
+<div class="story" id="story">
+  <div class="prog" id="prog"></div>
+  <div class="hdr">
+    <span class="hdr-brand">ProfitMaxxing</span>
+    <span class="hdr-date">Feb 2026</span>
+  </div>
+  <div class="ticker" id="ticker">
+    <span class="ticker-l" id="tickerLabel">Leaking since you opened this</span>
+    <span class="ticker-v" id="tickerVal">$0.00</span>
+  </div>
+  <div class="tap tap-l" id="tapL"></div>
+  <div class="tap tap-r" id="tapR"></div>
+
+  <div class="track" id="track">
+
+    <!-- 1: OPEN -->
+    <div class="card active">
+      <div class="kicker neutral">Glow Botanicals · Monthly Review</div>
+      <div class="headline">Here's your February<br>in <em>90 seconds.</em></div>
+      <div class="rule"></div>
+      <div class="body">You made more money this month. But it cost more to make it. <strong>We found $9,400 per month you're leaving on the table</strong> — and this report shows you exactly where it's going, proves it with data, and tells you how to get it back.</div>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <span style="font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:6px;background:var(--good-bg);color:var(--good)">Revenue up</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:6px;background:var(--bad-bg);color:var(--bad)">Margins down</span>
+        <span style="font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:6px;background:var(--warn-bg);color:var(--warn)">Overpaying</span>
+      </div>
+      <div class="hint">tap right side to continue</div>
+    </div>
+
+    <!-- 2: REVENUE -->
+    <div class="card">
+      <div class="kicker good">The good</div>
+      <div class="bignum" style="font-size:56px;color:var(--ink)">$187K</div>
+      <div class="bignum-label">in revenue this month — your best February ever</div>
+      <div class="rule"></div>
+      <div class="body"><strong>$20,600 more than January.</strong> Growth driven by subscriptions (+31%) and Amazon (+18%). Shopify DTC was flat — your ad issues are holding it back.</div>
+      <div class="comps">
+        <div class="comp"><div class="comp-name">Cocokind</div><div class="comp-stat">~$210K/mo</div></div>
+        <div class="comp"><div class="comp-name">Herbivore</div><div class="comp-stat">~$195K/mo</div></div>
+        <div class="comp"><div class="comp-name">Youth to the People</div><div class="comp-stat">~$320K/mo</div></div>
+      </div>
+      <div style="font-family:var(--sans);font-size:12px;font-weight:300;color:var(--ink4);font-style:italic">Estimates via SimilarWeb & marketplace data, Jan 2026</div>
+    </div>
+
+    <!-- 3: CAC -->
+    <div class="card">
+      <div class="kicker bad">Problem no. 1</div>
+      <div class="headline">It costs $8 more to get each new customer than it did last month.</div>
+      <div class="compare">
+        <div class="compare-box bad">
+          <div class="compare-label">This month</div>
+          <div class="compare-val">$47.20</div>
+          <div class="compare-sub">per new customer</div>
+        </div>
+        <div class="compare-box good">
+          <div class="compare-label">Last month</div>
+          <div class="compare-val">$38.70</div>
+          <div class="compare-sub">per new customer</div>
+        </div>
+      </div>
+      <div class="evidence">
+        <div class="evidence-title">Where you stand — Clean beauty, $1–5M revenue</div>
+        <div class="evidence-row"><span class="evidence-name evidence-you">You</span><span class="evidence-val bad">$47.20</span></div>
+        <div class="evidence-row"><span class="evidence-name">Category median</span><span class="evidence-val mid">$38.50</span></div>
+        <div class="evidence-row"><span class="evidence-name">Top 25% of brands</span><span class="evidence-val good">$29.00</span></div>
+        <div class="evidence-src">Source: Varos benchmark data, Q1 2026 · 412 brands in cohort</div>
+      </div>
+      <div class="body" style="font-size:13px;margin-bottom:0"><strong>Why it happened:</strong> Your top Meta ad set hit 4.2× frequency. Same people seeing the same ads repeatedly. New creative and rebuilt audiences will bring this back under $35.</div>
+    </div>
+
+    <!-- 4: FULFILLMENT -->
+    <div class="card">
+      <div class="kicker warn">Problem no. 2</div>
+      <div class="headline">Your shipping partner is charging you $0.95 more per order than market rate.</div>
+      <div class="compare">
+        <div class="compare-box bad">
+          <div class="compare-label">Your rate</div>
+          <div class="compare-val">$4.85</div>
+          <div class="compare-sub">per order</div>
+        </div>
+        <div class="compare-box good">
+          <div class="compare-label">Market rate</div>
+          <div class="compare-val">$3.90</div>
+          <div class="compare-sub">at your volume</div>
+        </div>
+      </div>
+      <div class="evidence">
+        <div class="evidence-title">Competing quotes pulled this month</div>
+        <div class="evidence-row"><span class="evidence-name">ShipBob</span><span class="evidence-val good">$3.82</span></div>
+        <div class="evidence-row"><span class="evidence-name">ShipHero</span><span class="evidence-val good">$3.95</span></div>
+        <div class="evidence-row"><span class="evidence-name">Deliverr (Flexport)</span><span class="evidence-val good">$4.05</span></div>
+        <div class="evidence-row"><span class="evidence-name evidence-you">Your current 3PL</span><span class="evidence-val bad">$4.85</span></div>
+        <div class="evidence-src">Quotes based on your SKU profile: 47 active SKUs, ~2,700 orders/mo, avg 1.3 items/order</div>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Sent — check your inbox')">Email me these quotes</button>
+      <div class="btn-hint">Includes a PDF comparison table + a renegotiation script</div>
+    </div>
+
+    <!-- 5: AD SPEND -->
+    <div class="card">
+      <div class="kicker bad">Problem no. 3</div>
+      <div class="headline">You're putting 81% of your ad budget in the wrong place.</div>
+      <div class="compare">
+        <div class="compare-box bad">
+          <div class="compare-label">Meta Ads return</div>
+          <div class="compare-val">$2.10</div>
+          <div class="compare-sub">per $1 spent</div>
+        </div>
+        <div class="compare-box good">
+          <div class="compare-label">Amazon Ads return</div>
+          <div class="compare-val">$4.80</div>
+          <div class="compare-sub">per $1 spent</div>
+        </div>
+      </div>
+      <div class="body"><strong>Amazon generates 2.3× more revenue per ad dollar</strong> — but you're only allocating 19% of your budget there. Brands like Cocokind and Herbivore allocate 30–40% to Amazon at this stage.</div>
+      <div class="evidence">
+        <div class="evidence-title">Your ad split vs. top performers</div>
+        <div class="evidence-row"><span class="evidence-name">Your Meta allocation</span><span class="evidence-val bad">81%</span></div>
+        <div class="evidence-row"><span class="evidence-name">Top performer average</span><span class="evidence-val good">55–65%</span></div>
+        <div class="evidence-row"><span class="evidence-name">Your Amazon allocation</span><span class="evidence-val bad">19%</span></div>
+        <div class="evidence-row"><span class="evidence-name">Top performer average</span><span class="evidence-val good">30–40%</span></div>
+        <div class="evidence-src">Source: Varos channel allocation benchmarks, DTC beauty $1–5M, Q1 2026</div>
+      </div>
+    </div>
+
+    <!-- 6: THE WIN -->
+    <div class="card">
+      <div class="kicker good">What's working</div>
+      <div class="bignum" style="font-size:56px;color:var(--good)">+31%</div>
+      <div class="bignum-label">subscription revenue growth, month over month</div>
+      <div class="rule"></div>
+      <div class="body"><strong>490 people now pay you automatically every month.</strong> That's 18% of total revenue on autopilot — up from 11% in October. Your subscriber churn is 4.2% vs. a category average of 7.8%. This is your highest-margin, most predictable revenue stream.</div>
+      <div class="evidence">
+        <div class="evidence-title">Subscriber economics</div>
+        <div class="evidence-row"><span class="evidence-name">Subscriber lifetime value</span><span class="evidence-val good">3.4× one-time buyer</span></div>
+        <div class="evidence-row"><span class="evidence-name">Your churn rate</span><span class="evidence-val good">4.2%</span></div>
+        <div class="evidence-row"><span class="evidence-name">Category avg churn</span><span class="evidence-val mid">7.8%</span></div>
+        <div class="evidence-src">Source: Recharge subscription benchmarks, beauty & wellness, 2025</div>
+      </div>
+      <div class="body" style="font-size:13px;margin-bottom:0"><strong>Next move:</strong> Make subscribe-and-save the default on all product pages with a 15% incentive. Brands that default to subscription see 8–12% higher conversion.</div>
+    </div>
+
+    <!-- 7: WHAT IF -->
+    <div class="card">
+      <div class="kicker neutral">The alternate February</div>
+      <div class="headline">What your month <em>would have</em> looked like with these changes.</div>
+      <div class="whatif">
+        <div class="whatif-header">If you'd acted on last month's report</div>
+        <div class="whatif-body">
+          <div class="whatif-row"><span class="whatif-metric">Cost per new customer</span><div class="whatif-vals"><span class="whatif-old">$47.20</span><span class="whatif-arr">→</span><span class="whatif-new">$35.00</span></div></div>
+          <div class="whatif-row"><span class="whatif-metric">Fulfillment per order</span><div class="whatif-vals"><span class="whatif-old">$4.85</span><span class="whatif-arr">→</span><span class="whatif-new">$3.90</span></div></div>
+          <div class="whatif-row"><span class="whatif-metric">Blended ad return</span><div class="whatif-vals"><span class="whatif-old">$2.10</span><span class="whatif-arr">→</span><span class="whatif-new">$3.20</span></div></div>
+          <div class="whatif-row"><span class="whatif-metric">Monthly net profit</span><div class="whatif-vals"><span class="whatif-old">$18.2K</span><span class="whatif-arr">→</span><span class="whatif-new">$27.6K</span></div></div>
+        </div>
+      </div>
+      <div class="body" style="text-align:center;font-weight:500;color:var(--ink)">That's $9,400 more in your pocket. Every single month.</div>
+    </div>
+
+    <!-- 8: TO-DO -->
+    <div class="card">
+      <div class="kicker neutral">March to-do list</div>
+      <div class="headline">Three changes.<br>Ranked by impact.</div>
+      <ul class="checklist">
+        <li class="check-item">
+          <span class="check-num">01</span>
+          <div>
+            <div class="check-text"><strong>Renegotiate your 3PL rate.</strong> We've pulled three competing quotes. Forward them and ask your provider to match $3.90 or you'll switch.</div>
+            <span class="check-impact">Saves ~$2,600/mo</span>
+          </div>
+        </li>
+        <li class="check-item">
+          <span class="check-num">02</span>
+          <div>
+            <div class="check-text"><strong>Refresh Meta creative and audiences.</strong> Build new lookalikes from your top 10% subscribers — not all purchasers. Launch five new creatives this sprint.</div>
+            <span class="check-impact">Saves ~$5,100/mo in wasted spend</span>
+          </div>
+        </li>
+        <li class="check-item">
+          <span class="check-num">03</span>
+          <div>
+            <div class="check-text"><strong>Move 15% of Meta budget to Amazon.</strong> Start with Sponsored Products on your top five SKUs by revenue.</div>
+            <span class="check-impact">Adds ~$4,200/mo in revenue</span>
+          </div>
+        </li>
+      </ul>
+      <button class="btn btn-secondary" onclick="showToast('Sent — check your inbox')">Email me this list</button>
+    </div>
+
+    <!-- 9: TALLY -->
+    <div class="card">
+      <div class="kicker good">Total opportunity</div>
+      <div class="headline">If you act on <em>everything</em> in this report:</div>
+      <div class="tally">
+        <div class="tally-num" id="tallyNum">$0</div>
+        <div class="tally-label">recovered per month</div>
+        <div class="tally-sub">That's <strong>$112,800 per year</strong> flowing to your bottom line instead of leaking out.</div>
+      </div>
+      <button class="btn btn-secondary" onclick="showToast('Copied to clipboard')">Share this with your team</button>
+      <div class="btn-hint">Send the fulfillment card to ops. Send the ad card to your media buyer.</div>
+    </div>
+
+    <!-- 10: CLOSE -->
+    <div class="card">
+      <div class="kicker neutral">End of report</div>
+      <div class="headline">That's your February.</div>
+      <div class="rule"></div>
+      <div class="body">Every month, we find what's leaking, benchmark it against real market data, and give you the proof to act on it. <strong>No dashboards. No jargon. No calls unless you want one.</strong></div>
+      <div style="background:var(--white);border:1px solid rgba(0,0,0,.06);border-radius:12px;padding:24px;text-align:center;margin:20px 0">
+        <div style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--ink2);margin-bottom:14px">Questions about anything in this report?</div>
+        <button class="btn btn-primary" style="margin-top:0" onclick="showToast('We\'ll reply within 4 hours')">Reply to this email</button>
+      </div>
+      <div style="text-align:center;margin-top:20px">
+        <div style="font-family:var(--sans);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink4)">ProfitMaxxing</div>
+        <div style="font-family:var(--sans);font-size:11px;font-weight:300;color:var(--ink4);margin-top:4px">Built for Glow Botanicals · Data through Jan 31, 2026</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const track=document.getElementById('track'),prog=document.getElementById('prog'),
+  ticker=document.getElementById('ticker'),tickerVal=document.getElementById('tickerVal'),
+  tickerLabel=document.getElementById('tickerLabel'),
+  cards=document.querySelectorAll('.card'),total=cards.length;
+let current=0,startTime=Date.now(),implemented=false;
+
+for(let i=0;i<total;i++){const s=document.createElement('div');s.className='prog-s'+(i===0?' active':'');s.innerHTML='<div class="f"></div>';prog.appendChild(s)}
+
+function goTo(i){
+  if(i<0||i>=total)return;
+  current=i;
+  track.style.transform=`translateX(-${current*100}%)`;
+  document.querySelectorAll('.prog-s').forEach((s,j)=>{s.className='prog-s';if(j<current)s.classList.add('done');if(j===current)s.classList.add('active')});
+  cards.forEach((c,j)=>c.classList.toggle('active',j===current));
+  
+  // Ticker logic
+  const showTicker=current>=1&&current<total-1;
+  ticker.classList.toggle('show',showTicker);
+  
+  // Flip ticker to green on "what's working" card and after
+  if(current>=5){
+    ticker.classList.add('good-mode');
+    tickerLabel.textContent='Recovered if you act today';
+  }else{
+    ticker.classList.remove('good-mode');
+    tickerLabel.textContent='Leaking since you opened this';
+  }
+  
+  if(current===8)animateTally();
+}
+
+// Ticker counter
+setInterval(()=>{
+  if(!ticker.classList.contains('show'))return;
+  const elapsed=(Date.now()-startTime)/1000;
+  if(ticker.classList.contains('good-mode')){
+    // Show money gained — faster for psychological reward
+    const gained=(elapsed*0.12).toFixed(2);
+    tickerVal.textContent='+$'+gained;
+  }else{
+    const lost=(elapsed*0.09).toFixed(2);
+    tickerVal.textContent='-$'+lost;
+  }
+},100);
+
+function animateTally(){
+  const el=document.getElementById('tallyNum');
+  let c=0;const target=9400,step=Math.ceil(target/50);
+  const iv=setInterval(()=>{c=Math.min(c+step,target);el.textContent='$'+c.toLocaleString();if(c>=target)clearInterval(iv)},20);
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+document.getElementById('tapR').addEventListener('click',()=>goTo(current+1));
+document.getElementById('tapL').addEventListener('click',()=>goTo(current-1));
+
+let tx=0,sw=false;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;sw=true},{passive:true});
+document.addEventListener('touchend',e=>{if(!sw)return;const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-(e.changedTouches[0].clientY);if(Math.abs(dx)>40){dx<0?goTo(current+1):goTo(current-1)}sw=false},{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1)});
+
+goTo(0);
+</script>
+
+</body>
+</html>
