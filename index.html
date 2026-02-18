@@ -267,6 +267,57 @@ section{padding:100px 24px}
   font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink3);font-style:italic;
 }
 
+/* ---- FREE SCAN FORM ---- */
+.scan-section{background:var(--white);border-top:1px solid rgba(0,0,0,.04);border-bottom:1px solid rgba(0,0,0,.04)}
+.scan-box{
+  max-width:540px;margin:48px auto 0;padding:40px 36px;border-radius:16px;
+  background:var(--bg);border:1px solid rgba(0,0,0,.06);
+}
+.scan-form{display:flex;flex-direction:column;gap:14px}
+.scan-row{display:flex;gap:12px}
+.scan-row > *{flex:1}
+.scan-input{
+  font-family:var(--sans);font-size:14px;font-weight:300;
+  padding:13px 16px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);
+  background:var(--white);color:var(--ink);outline:none;
+  transition:border-color .15s;width:100%;
+}
+.scan-input::placeholder{color:var(--ink4)}
+.scan-input:focus{border-color:rgba(0,0,0,.2)}
+.scan-select{
+  font-family:var(--sans);font-size:14px;font-weight:300;
+  padding:13px 16px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);
+  background:var(--white);color:var(--ink);outline:none;
+  transition:border-color .15s;width:100%;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23B8B5AD' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;
+  padding-right:36px;
+}
+.scan-select:focus{border-color:rgba(0,0,0,.2)}
+.scan-submit{
+  font-family:var(--sans);font-size:15px;font-weight:500;
+  padding:14px 32px;border-radius:10px;margin-top:4px;
+  background:var(--ink);color:var(--bg);border:none;cursor:pointer;
+  transition:all .15s;letter-spacing:-.01em;
+}
+.scan-submit:hover{opacity:.85;transform:translateY(-1px)}
+.scan-note{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--ink4);text-align:center;margin-top:12px;line-height:1.5}
+.scan-what{margin-top:32px;padding-top:24px;border-top:1px solid rgba(0,0,0,.04)}
+.scan-what-title{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--ink);margin-bottom:14px}
+.scan-what-list{display:flex;flex-direction:column;gap:8px}
+.scan-what-item{display:flex;gap:10px;align-items:flex-start}
+.scan-what-check{font-family:var(--mono);font-size:12px;color:var(--good);margin-top:1px;flex-shrink:0}
+.scan-what-text{font-family:var(--sans);font-size:13px;font-weight:300;line-height:1.5;color:var(--ink2)}
+.scan-success{display:none;text-align:center;padding:20px 0}
+.scan-success-icon{font-size:32px;margin-bottom:12px}
+.scan-success-hl{font-family:var(--serif);font-size:24px;font-weight:400;margin-bottom:8px;color:var(--ink)}
+.scan-success-body{font-family:var(--sans);font-size:14px;font-weight:300;line-height:1.6;color:var(--ink2)}
+@media(max-width:768px){
+  .scan-box{padding:28px 20px}
+  .scan-row{flex-direction:column;gap:14px}
+}
+
 /* ---- PRICING ---- */
 .pricing{background:var(--white);border-top:1px solid rgba(0,0,0,.04);border-bottom:1px solid rgba(0,0,0,.04)}
 .pricing .section-headline{text-align:center}
@@ -352,7 +403,7 @@ footer a:hover{color:var(--ink)}
 <!-- NAV -->
 <nav>
   <span class="nav-mark">ProfitMaxxing</span>
-  <a href="mailto:william@profitmaxxing.com" class="nav-cta">Get Your Audit</a>
+  <a href="#free-scan" class="nav-cta">Free Profit Scan</a>
 </nav>
 
 <!-- HERO -->
@@ -361,10 +412,10 @@ footer a:hover{color:var(--ink)}
   <h1 class="hero-headline">We find the profit<br>you're <em>leaving on the table.</em></h1>
   <p class="hero-sub">Monthly financial intelligence for DTC brands doing $500K–$5M. We prove where the money goes, benchmark you against the market, and tell you exactly what to do about it.</p>
   <div class="hero-cta-group">
-    <a href="mailto:william@profitmaxxing.com?subject=I want my audit" class="btn-primary">Get Your First Audit — $500</a>
+    <a href="#free-scan" class="btn-primary">Get Your Free Profit Scan</a>
     <a href="#demo" class="btn-secondary">See a Sample Report</a>
   </div>
-  <div class="hero-proof">Backed by data from 400+ DTC brands across every category</div>
+  <div class="hero-proof">No payment required. See where your brand is leaking in 48 hours.</div>
 </section>
 
 <!-- PROBLEM -->
@@ -599,59 +650,117 @@ footer a:hover{color:var(--ink)}
   </div>
 </section>
 
+<!-- FREE PROFIT SCAN -->
+<section class="scan-section" id="free-scan">
+  <div class="section-inner" style="text-align:center">
+    <div class="section-kicker reveal">Free profit scan</div>
+    <h2 class="section-headline reveal">See where your brand is<br><em>leaking money.</em></h2>
+    <p class="section-body reveal" style="margin:0 auto">Drop your store URL below. Within 48 hours, we'll send you a personalized mini-analysis showing your biggest profit leak — with real benchmarks and a specific fix. No payment, no call, no strings.</p>
+  </div>
+
+  <div class="scan-box reveal">
+    <form class="scan-form" id="scanForm" action="https://formsubmit.co/william@profitmaxxing.com" method="POST">
+      <input type="hidden" name="_subject" value="New Free Profit Scan Request">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" value="https://profitmaxxing.com#scan-thanks">
+      <div class="scan-row">
+        <input type="text" name="name" class="scan-input" placeholder="Your first name" required>
+        <input type="email" name="email" class="scan-input" placeholder="Your email" required>
+      </div>
+      <input type="url" name="store_url" class="scan-input" placeholder="Your Shopify store URL (e.g. yourbrand.com)" required>
+      <div class="scan-row">
+        <select name="revenue" class="scan-select" required>
+          <option value="" disabled selected>Estimated annual revenue</option>
+          <option value="Under $500K">Under $500K</option>
+          <option value="$500K - $1M">$500K – $1M</option>
+          <option value="$1M - $2M">$1M – $2M</option>
+          <option value="$2M - $5M">$2M – $5M</option>
+          <option value="$5M+">$5M+</option>
+        </select>
+        <select name="category" class="scan-select" required>
+          <option value="" disabled selected>Product category</option>
+          <option value="Beauty / Skincare">Beauty / Skincare</option>
+          <option value="Wellness / Supplements">Wellness / Supplements</option>
+          <option value="Food / Beverage">Food / Beverage</option>
+          <option value="Fitness / Sport">Fitness / Sport</option>
+          <option value="Pet">Pet</option>
+          <option value="Home / Lifestyle">Home / Lifestyle</option>
+          <option value="Fashion / Apparel">Fashion / Apparel</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <input type="text" name="biggest_concern" class="scan-input" placeholder="Biggest financial question right now (optional)">
+      <button type="submit" class="scan-submit">Send Me My Free Profit Scan</button>
+      <div class="scan-note">We'll analyze your public data and send findings within 48 hours. Zero commitment.</div>
+    </form>
+
+    <div class="scan-what">
+      <div class="scan-what-title">What you'll get in your scan:</div>
+      <div class="scan-what-list">
+        <div class="scan-what-item"><span class="scan-what-check">✓</span><span class="scan-what-text">Estimated CAC benchmarked against brands your size in your category</span></div>
+        <div class="scan-what-item"><span class="scan-what-check">✓</span><span class="scan-what-text">Fulfillment cost estimate vs. market rates (with competing quotes)</span></div>
+        <div class="scan-what-item"><span class="scan-what-check">✓</span><span class="scan-what-text">Your #1 profit leak identified with a specific dollar amount</span></div>
+        <div class="scan-what-item"><span class="scan-what-check">✓</span><span class="scan-what-text">One actionable fix you can implement this week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PRICING -->
 <section class="pricing">
   <div class="section-inner">
     <div class="section-kicker reveal">Pricing</div>
-    <h2 class="section-headline reveal">Start with one audit.<br>Stay because it <em>pays for itself.</em></h2>
-    <p class="section-body reveal">The first report typically finds $2K–$10K/month in recoverable profit. If yours finds less than $2K, you pay nothing.</p>
+    <h2 class="section-headline reveal">Start free. Stay because<br>it <em>pays for itself.</em></h2>
+    <p class="section-body reveal">Your free scan shows you the problem. The full audit proves exactly how much you're losing — and how to stop it.</p>
     <div class="pricing-grid">
       <div class="price-card reveal">
-        <div class="price-tier">First month</div>
-        <div class="price-amount">$500</div>
-        <div class="price-period">one-time audit</div>
+        <div class="price-tier">Start here</div>
+        <div class="price-amount">Free</div>
+        <div class="price-period">profit scan</div>
         <div class="price-rule"></div>
         <ul class="price-features">
-          <li>Full financial story with real data</li>
-          <li>Benchmarks against your category</li>
-          <li>Specific action items with proof</li>
-          <li>Vendor leverage scripts</li>
-          <li>Money-back guarantee</li>
+          <li>Public data analysis of your store</li>
+          <li>Category benchmarks for your size</li>
+          <li>Your #1 profit leak identified</li>
+          <li>One specific fix with dollar impact</li>
+          <li>Delivered in 48 hours</li>
         </ul>
-        <a href="mailto:william@profitmaxxing.com?subject=I want my $500 audit" class="price-btn dark">Get Started</a>
+        <a href="#free-scan" class="price-btn dark">Get Your Free Scan</a>
       </div>
       <div class="price-card featured reveal">
+        <div class="price-tier">Full audit</div>
+        <div class="price-amount">$500</div>
+        <div class="price-period">one-time deep dive</div>
+        <div class="price-rule"></div>
+        <ul class="price-features">
+          <li>Everything in free scan, plus:</li>
+          <li>Full P&L benchmarked against category</li>
+          <li>Ad spend audit with cut/scale recs</li>
+          <li>Vendor leverage scripts with quotes</li>
+          <li>Interactive mobile report with your data</li>
+          <li>Money-back if we find less than $2K/mo</li>
+        </ul>
+        <a href="mailto:william@profitmaxxing.com?subject=I want the full audit" class="price-btn light">Upgrade to Full Audit</a>
+      </div>
+      <div class="price-card reveal">
         <div class="price-tier">Monthly</div>
         <div class="price-amount">$2–5K</div>
         <div class="price-period">per month</div>
         <div class="price-rule"></div>
         <ul class="price-features">
-          <li>Everything in the audit, monthly</li>
+          <li>Full audit every month, automated</li>
           <li>Ongoing benchmarking & tracking</li>
-          <li>Ad spend optimization</li>
           <li>Vendor negotiation support</li>
-          <li>Monthly strategy call (Tier 2+)</li>
+          <li>Ad spend optimization</li>
+          <li>Strategy call (Tier 2+)</li>
         </ul>
-        <a href="mailto:william@profitmaxxing.com?subject=Tell me about monthly plans" class="price-btn light">Learn More</a>
-      </div>
-      <div class="price-card reveal">
-        <div class="price-tier">Fractional</div>
-        <div class="price-amount">$5K</div>
-        <div class="price-period">per month</div>
-        <div class="price-rule"></div>
-        <ul class="price-features">
-          <li>Everything in monthly, plus</li>
-          <li>Weekly Slack access</li>
-          <li>Ad-hoc financial analysis</li>
-          <li>Tax planning (built by a CPA)</li>
-          <li>Functionally your Head of Finance</li>
-        </ul>
-        <a href="mailto:william@profitmaxxing.com?subject=Tell me about fractional" class="price-btn dark">Let's Talk</a>
+        <a href="mailto:william@profitmaxxing.com?subject=Tell me about monthly plans" class="price-btn dark">Learn More</a>
       </div>
     </div>
     <div class="guarantee-box reveal">
-      <div class="guarantee-headline">No-risk guarantee</div>
-      <div class="guarantee-body">If your first audit finds less than $2,000/month in recoverable profit, you get a full refund. No questions, no friction. We only win when you win.</div>
+      <div class="guarantee-headline">Zero risk at every level</div>
+      <div class="guarantee-body">The scan is free. The full audit has a money-back guarantee — if we find less than $2,000/month in recoverable profit, you pay nothing. We only win when you win.</div>
     </div>
   </div>
 </section>
@@ -662,6 +771,10 @@ footer a:hover{color:var(--ink)}
     <div class="section-kicker reveal">Questions</div>
     <h2 class="section-headline reveal">Before you ask.</h2>
     <div class="faq-list">
+      <div class="faq-item reveal">
+        <div class="faq-q">What's the catch with the free scan?</div>
+        <div class="faq-a">No catch. We analyze your publicly available data, benchmark it against your category, and send you the findings. If you find it valuable and want us to go deeper with your actual financial data, the full audit is $500 with a money-back guarantee. Most founders are surprised by what we find just from public data alone.</div>
+      </div>
       <div class="faq-item reveal">
         <div class="faq-q">How is this different from Triple Whale or Lifetimely?</div>
         <div class="faq-a">Those are data tools — they show you numbers. We're a decision tool. Every insight comes with market benchmarks, proof, and a specific action to take. We don't give you a dashboard to figure out. We tell you what to do.</div>
@@ -689,9 +802,9 @@ footer a:hover{color:var(--ink)}
 <!-- CTA FOOTER -->
 <section class="cta-footer">
   <h2 class="section-headline reveal">Your brand is leaking money<br><em>right now.</em></h2>
-  <p class="section-body reveal" style="margin:0 auto 32px">The first step is a $500 audit. If we can't find at least $2K/month you're leaving on the table, it's free.</p>
+  <p class="section-body reveal" style="margin:0 auto 32px">Get your free profit scan. We'll show you your biggest leak — with benchmarked data and a specific fix — in 48 hours. No payment, no call.</p>
   <div class="hero-cta-group reveal">
-    <a href="mailto:william@profitmaxxing.com?subject=I want my audit" class="btn-primary">Get Your Audit</a>
+    <a href="#free-scan" class="btn-primary">Get Your Free Profit Scan</a>
   </div>
 </section>
 
